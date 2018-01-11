@@ -1,6 +1,5 @@
 # Sample Code
-# How to Retrieve Data from Firebase WITHOUT authentication
-# Will be printed in beauty format
+# How to Retrieve Data with FILTER
 
 import pyrebase
 import json
@@ -16,6 +15,9 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 # Retreive
-result = db.child('mahasiswacollection').get()
+result = db.child('mahasiswacollection').order_by_child('asal').equal_to('Gresik').get()
 # Print
-print(json.dumps(result.val(), indent=4))
+if len(result.pyres) > 0:
+    print(json.dumps(result.val(), indent=4))
+else:
+    print("No Result!")
