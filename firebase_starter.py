@@ -1,9 +1,10 @@
 # Sample Code
-# How to Retrieve Data with FILTER
+# How to Push/Add/Get data from/to Firebase WITHOUT authentication
 
+# Import...
 import pyrebase
-import json
 
+# Config
 config = {
     "apiKey" : False,
     "authDomain": False,
@@ -14,10 +15,14 @@ config = {
 # Init
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
-# Retreive
-result = db.child('mahasiswacollection').order_by_child('asal').equal_to('Gresik').get()
-# Print
-if len(result.pyres) > 0:
-    print(json.dumps(result.val(), indent=4))
-else:
-    print("No Result!")
+
+# Push data
+
+# Retrieve data
+
+# Filter data
+
+# Stream
+
+# Run
+print("Hi... this is a starter file")
