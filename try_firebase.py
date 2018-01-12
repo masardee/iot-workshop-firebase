@@ -1,6 +1,6 @@
-# Sample Code
-# How to Push/Add/Get data from/to Firebase WITHOUT authentication
+# Firebase Starter Project #
 
+# Import...
 import pyrebase
 import json
 
@@ -11,12 +11,13 @@ config = {
     "databaseURL": "https://iot-project-11a31.firebaseio.com/",
     "storageBucket": False
 }
+collection_name = "mahasiswacollection"
 
-# init
+# Init
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
-# push data
+# Push data
 def push_data():
     global db
     mahasiswa = {
@@ -25,39 +26,41 @@ def push_data():
         "umur": "19",
         "hobi": ["Berenang"]
     }
-    result = db.child('mahasiswacollection').push(mahasiswa)
+    result = db.child(collection_name).push(mahasiswa)
     print result
 
-# retrieve data
+# Retrieve data
 def get_list():
-    global db
-    result = db.child('mahasiswacollection').get()
-    print (result.val())
+    global db, collection_name
+    result = db.child(collection_name).get()
+    print (json.dumps(result.val(), indent=4))
 
-# filter data
-def get_list_filter():
-    global db
-    result = db.child('mahasiswacollection').order_by_child('asal').equal_to('Gresik').get()
+# Filter data
+def get_list_filter(kota):
+    global db, collection_name
+    result = db.child(collection_name).order_by_child('asal').equal_to(kota).get()
     # Print
     if len(result.pyres) > 0:
         print(json.dumps(result.val(), indent=4))
     else:
         print("No Result!")
 
-# stream
-def stream():
-    global db
-    db.child('mahasiswacollection').stream(stream_handler)
-
+# Stream
 stream_counter = 0
 def stream_handler(message):
     global stream_counter
     if stream_counter > 0:
-        print(message["event"]) # put
-        print(message["path"]) # /-K7yGTTEp7O549EzTYtI
+        print(message["event"])
+        print(message["path"])
         print(json.dumps(message["data"], indent=4))
     else:
-        print("Stream started....")
+        print("Listener just started....")
     stream_counter+=1
 
+def stream():
+    global db
+    db.child(collection_name).stream(stream_handler)
+
+# Run
 stream()
+print("Hi... I run after stream initiated!")
